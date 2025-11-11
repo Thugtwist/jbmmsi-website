@@ -177,7 +177,7 @@ const Modal = ({ isOpen, onClose, selectedProgram }) => {
                 type="tel" 
                 id="phone" 
                 name="phone" 
-                placeholder="Your phone number (it should be without 0 or add +63 in your first number)" 
+                placeholder="without '0' at the start"
                 value={formData.phone}
                 onChange={handleChange}
               />
