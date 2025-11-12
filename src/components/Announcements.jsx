@@ -15,25 +15,60 @@ const Announcements = () => {
     }
   }, [announcements.length]);
 
-  // Simple image URL handler
-  const getImageUrl = (announcement) => {
-    if (!announcement || !announcement.image) {
+// In your getImageUrl function, update it to this:
+const getImageUrl = (announcement) => {
+  if (!announcement || !announcement.image) {
+    console.log('❌ No image for announcement:', announcement?._id);
+    return getPlaceholderUrl();
+  }
+  
+  let imageUrl = announcement.image;
+  
+  // Handle base64 data that might be incomplete
+  if (imageUrl.startsWith('iVBORw') && !imageUrl.startsWith('data:')) {
+    console.log('🔄 Converting base64 to data URL for:', announcement.title);
+    
+    // Check if base64 data is complete enough
+    if (imageUrl.length > 1000) {
+      imageUrl = `data:image/png;base64,${imageUrl}`;
+    } else {
+      console.log('❌ Base64 data too short, using placeholder');
       return getPlaceholderUrl();
     }
-    return announcement.image;
-  };
+  }
+  
+  // Handle data URLs that might be corrupted
+  if (imageUrl.startsWith('data:image') && imageUrl.length < 1000) {
+    console.log('❌ Data URL too short, likely corrupted');
+    return getPlaceholderUrl();
+  }
+  
+  // Handle regular file paths
+  if (!imageUrl.startsWith('data:') && !imageUrl.startsWith('http') && !imageUrl.startsWith('/')) {
+    imageUrl = `https://web-server-2dis.onrender.com/uploads/${imageUrl}`;
+  }
+  
+  // If it's a relative path, make it absolute
+  if (imageUrl.startsWith('/uploads/') && !imageUrl.startsWith('http')) {
+    imageUrl = `https://web-server-2dis.onrender.com${imageUrl}`;
+  }
+  
+  console.log('🖼️ Image URL ready for:', announcement.title);
+  return imageUrl;
+};
 
-  const getPlaceholderUrl = () => {
-    return '/images/placeholder.jpg';
-  };
+// Update the placeholder URL function
+const getPlaceholderUrl = () => {
+  return 'https://web-server-2dis.onrender.com/images/placeholder.jpg';
+};
 
   const handleImageError = (e, announcement) => {
-    console.warn(`❌ Image failed to load for: ${announcement.title}`);
+    console.warn(`❌ Image failed to load for announcement: ${announcement._id}`);
     
-    // Set placeholder on error
+    // Set placeholder
     if (e.target) {
       e.target.src = getPlaceholderUrl();
-      e.target.onerror = null; // Prevent infinite loop
+      e.target.onerror = null;
     }
   };
 
@@ -94,6 +129,7 @@ const Announcements = () => {
           <div className="announcement-track">
             {announcements.map((announcement, index) => {
               const imageUrl = getImageUrl(announcement);
+              const hasImage = !!imageUrl;
               
               return (
                 <div 
@@ -107,13 +143,22 @@ const Announcements = () => {
                     <p className="announcement-desc">{announcement.description}</p>
                   </div>
                   <div className="announcement-img">
-                    <img 
-                      src={imageUrl}
-                      alt={announcement.title}
-                      onError={(e) => handleImageError(e, announcement)}
-                      loading="lazy"
-                      crossOrigin="anonymous"
-                    />
+                    {hasImage ? (
+                      <img 
+                        src={imageUrl}
+                        alt={announcement.title}
+                        onError={(e) => handleImageError(e, announcement)}
+                        style={{ 
+                          maxWidth: '100%',
+                          height: 'auto'
+                        }}
+                        crossOrigin="anonymous"
+                      />
+                    ) : (
+                      <div className="no-image-placeholder">
+                        <span>No Image Available</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               );
