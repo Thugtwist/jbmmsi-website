@@ -68,7 +68,7 @@ const DownloadComponent = () => {
 
                           <div className="download-buttons">
     <a 
-        href="https://github.com/Thugtwist/apptest/releases/download/v1.0.0/JBMMSI.apk"
+        href="https://github.com/Thugtwist/apptest/releases/download/v1/JBMMSI.apk"
         download="JBMMSI.apk"
         className="download-btn primary"
         onClick={handleDownload}
