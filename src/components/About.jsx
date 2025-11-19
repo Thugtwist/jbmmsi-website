@@ -2,20 +2,20 @@ import React from 'react';
 
 const About = () => {
   const values = [
-    {
-      icon: "fas fa-graduation-cap",
-      title: "Excellence",
-      description: "Commit to the highest standards of academic and behavior, attendance and punctuality."
+     {
+      icon: "fas fa-heart",
+      title: "Core Values",
+      description: "JEM BRILLIANT MIND MONTESSORI SCHOOL INC. Our guiding principles are at the heart of our daily work with children and the foundation of our mission and vision. As members of the Montessori School of JEM BRILLIANT MIND MONTESSORI SCHOOL INC. faculty and staff, we hold these core values"
     },
     {
-      icon: "fas fa-heart",
-      title: "Responsibility",
-      description: "Demonstrate compassion, generosity and empathy when confronted with difference or need."
+      icon: "fas fa-graduation-cap",
+      title: "Mission",
+      description: "The Montessori School of JEM BRILLIANT MIND MONTESSORI SCHOOL INC. (JBMMSI) educates children to prepare them for a life of purpose, integrity, and academic accomplishment. We develop independent learners, critical thinkers, and tomorrow's leaders. JBMMSI does not discriminate on the basis of race, color, national origin, sex, disability, religion or age."
     },
     {
       icon: "fas fa-lightbulb",
-      title: "Visionary",
-      description: "Offer curiosity and thoughtfulness; seeking out new knowledge and weaving it into our understanding."
+      title: "Vision",
+      description: "The Montessori School of JEM BRILLIANT MIND MONTESSORI SCHOOL INC. (JBMMSI) will be well-known in the community as an accredited school for Toddlers through Adolescents. JBMMSI will operate as the leading examplar of Montessori education. We will provide an environment that nurtures children to reach their full potential, creating a high-quality, enriching environment for staff and a welcoming, open partnership with parents and families."
     }
   ];
 
@@ -29,9 +29,7 @@ const About = () => {
           
           <div className="about-text">
             <h2 className="section-title">About <span>Us</span></h2>
-         
-               <p>Jem Brilliant Mind Montissori School Inc. is committed to providing quality education that nurtures the holistic development of every child.</p>
-            <p>Our mission is to create a learning environment that fosters curiosity, creativity, and critical thinking while instilling strong moral values.</p>
+        
             <div className="values-list">
               {values.map((value, index) => (
                 <div key={index} className="value-item">
