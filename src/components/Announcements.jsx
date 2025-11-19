@@ -15,61 +15,33 @@ const Announcements = () => {
     }
   }, [announcements.length]);
 
-// In your getImageUrl function, update it to this:
-const getImageUrl = (announcement) => {
-  if (!announcement || !announcement.image) {
-    console.log('❌ No image for announcement:', announcement?._id);
-    return getPlaceholderUrl();
-  }
-  
-  let imageUrl = announcement.image;
-  
-  // Handle base64 data that might be incomplete
-  if (imageUrl.startsWith('iVBORw') && !imageUrl.startsWith('data:')) {
-    console.log('🔄 Converting base64 to data URL for:', announcement.title);
-    
-    // Check if base64 data is complete enough
-    if (imageUrl.length > 1000) {
-      imageUrl = `data:image/png;base64,${imageUrl}`;
-    } else {
-      console.log('❌ Base64 data too short, using placeholder');
+  // Simple image handler - trust the server to send proper URLs
+  const getImageUrl = (announcement) => {
+    if (!announcement) {
       return getPlaceholderUrl();
     }
-  }
-  
-  // Handle data URLs that might be corrupted
-  if (imageUrl.startsWith('data:image') && imageUrl.length < 1000) {
-    console.log('❌ Data URL too short, likely corrupted');
-    return getPlaceholderUrl();
-  }
-  
-  // Handle regular file paths
-  if (!imageUrl.startsWith('data:') && !imageUrl.startsWith('http') && !imageUrl.startsWith('/')) {
-    imageUrl = `https://web-server-2dis.onrender.com/uploads/${imageUrl}`;
-  }
-  
-  // If it's a relative path, make it absolute
-  if (imageUrl.startsWith('/uploads/') && !imageUrl.startsWith('http')) {
-    imageUrl = `https://web-server-2dis.onrender.com${imageUrl}`;
-  }
-  
-  console.log('🖼️ Image URL ready for:', announcement.title);
-  return imageUrl;
-};
+    
+    // Use whatever image field the server provides
+    const imageUrl = announcement.image || announcement.Photo;
+    
+    if (!imageUrl || imageUrl.includes('placeholder')) {
+      return getPlaceholderUrl();
+    }
+    
+    return imageUrl;
+  };
 
-// Update the placeholder URL function
-const getPlaceholderUrl = () => {
-  return 'https://web-server-2dis.onrender.com/images/placeholder.jpg';
-};
+  const getPlaceholderUrl = () => {
+    return 'https://web-server-2dis.onrender.com/images/placeholder.svg';
+  };
 
   const handleImageError = (e, announcement) => {
-    console.warn(`❌ Image failed to load for announcement: ${announcement._id}`);
-    
-    // Set placeholder
-    if (e.target) {
-      e.target.src = getPlaceholderUrl();
-      e.target.onerror = null;
-    }
+    console.log(`Image failed for: ${announcement.Title || announcement.title}`);
+    e.target.src = getPlaceholderUrl();
+  };
+
+  const handleImageLoad = (e, announcement) => {
+    console.log(`✅ Image loaded successfully for: ${announcement.Title || announcement.title}`);
   };
 
   const showSlide = (index) => {
@@ -94,10 +66,7 @@ const getPlaceholderUrl = () => {
           <h2 className="section-title">Recent <span>Announcements</span></h2>
           <div className="error-message">
             Error: {error}
-            <button 
-              onClick={() => window.location.reload()} 
-              className="retry-button"
-            >
+            <button onClick={() => window.location.reload()} className="retry-button">
               Retry
             </button>
           </div>
@@ -106,14 +75,13 @@ const getPlaceholderUrl = () => {
     );
   }
 
-  if (announcements.length === 0) {
+  if (!announcements || announcements.length === 0) {
     return (
       <section id="announcements" className="section announcements">
         <div className="container">
           <h2 className="section-title">Recent <span>Announcements</span></h2>
           <div className="no-announcements">
             No announcements available.
-            {!isConnected && <div className="connection-note">(Real-time updates offline)</div>}
           </div>
         </div>
       </section>
@@ -129,7 +97,9 @@ const getPlaceholderUrl = () => {
           <div className="announcement-track">
             {announcements.map((announcement, index) => {
               const imageUrl = getImageUrl(announcement);
-              const hasImage = !!imageUrl;
+              const title = announcement.Title || announcement.title || "Announcement";
+              const description = announcement.Description || announcement.description || "";
+              const date = announcement.Date || announcement.date || "";
               
               return (
                 <div 
@@ -138,27 +108,22 @@ const getPlaceholderUrl = () => {
                   style={{ display: index === currentSlide ? 'flex' : 'none' }}
                 >
                   <div className="announcement-info">
-                    <h3 className="announcement-title">{announcement.title}</h3>
-                    <p className="announcement-date">{announcement.date}</p>
-                    <p className="announcement-desc">{announcement.description}</p>
+                    <h3 className="announcement-title">{title}</h3>
+                    <p className="announcement-date">{date}</p>
+                    <p className="announcement-desc">{description}</p>
                   </div>
                   <div className="announcement-img">
-                    {hasImage ? (
-                      <img 
-                        src={imageUrl}
-                        alt={announcement.title}
-                        onError={(e) => handleImageError(e, announcement)}
-                        style={{ 
-                          maxWidth: '100%',
-                          height: 'auto'
-                        }}
-                        crossOrigin="anonymous"
-                      />
-                    ) : (
-                      <div className="no-image-placeholder">
-                        <span>No Image Available</span>
-                      </div>
-                    )}
+                    <img 
+                      src={imageUrl}
+                      alt={title}
+                      onError={(e) => handleImageError(e, announcement)}
+                      onLoad={(e) => handleImageLoad(e, announcement)}
+                      style={{ 
+                        maxWidth: '100%',
+                        height: 'auto',
+                        objectFit: 'cover'
+                      }}
+                    />
                   </div>
                 </div>
               );
