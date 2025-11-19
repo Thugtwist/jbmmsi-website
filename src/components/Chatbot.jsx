@@ -21,43 +21,36 @@ const Chatbot = () => {
     admission: {
       question: "What are the admission requirements?",
       answer: "Admission requirements include:\n• Completed application form\n• Transcript of records or Form 137\n• 2x2 ID pictures\n• Interview with the principal\n• Birth certificate (PSA)\n\nSpecific requirements may vary by program level.",
-      followUp: ["Application process", "Required documents", "Interview details"],
       icon: "📝"
     },
     programs: {
       question: "What programs do you offer?",
       answer: "We offer the following educational programs:\n\n🏫 **Preschool Level**\n• Nursery (3-4 years old)\n• Kindergarten (5-6 years old)\n\n🎒 **Elementary Level**\n• Grade 1 to Grade 6\n\n📚 **Tutorial Services**\n• One-on-One tutoring (Online & Face-to-Face)\n• All subjects coverage\n\n☀️ **Summer Programs**\n• Enrichment classes\n• Remedial sessions",
-      followUp: ["Preschool curriculum", "Elementary subjects", "Tutorial rates"],
       icon: "🏫"
     },
     fees: {
       question: "How much is the tuition fee?",
       answer: "Our fee structure is as follows:\n\n• **Preschool**: ₱5,000 per grading period\n• **Elementary**: ₱5,000 per grading period\n• **Tutorial**: ₱300-₱500 per hour (depending on subject)\n\n💡 *We offer sibling discounts and scholarship programs for qualified students.*",
-      followUp: ["Payment options", "Scholarship details", "Additional fees"],
       icon: "💲"
     },
     schedule: {
       question: "What are the school hours and schedule?",
       answer: "**Regular School Schedule:**\n• Morning session: 7:30 AM - 12:00 PM\n• Afternoon session: 1:00 PM - 4:30 PM\n\n**School Calendar:**\n• Academic year: June to March\n• Summer classes: April to May\n\n*Tutorial sessions can be scheduled flexibly based on student and tutor availability.*",
-      followUp: ["School calendar", "Holiday schedule", "Summer program dates"],
       icon: "⏰"
     },
     contact: {
       question: "How can we contact the school?",
       answer: "**Contact Information:**\n\n📞 Phone: +63993 617 8050\n📧 Email: jemmonte926@gmail.com\n📍 Address: Phase 6 Blk 3 Lot 4 Eastwood Residences San Isidro, Rodriguez, Philippines, 1860\n\n**Office Hours:**\nMonday to Friday, 7:00 AM - 5:00 PM",
-      followUp: ["Map location", "Social media", "Visit schedule"],
       icon: "📞"
     },
     facilities: {
       question: "What facilities are available?",
       answer: "Our campus features:\n\n🏫 Air-conditioned classrooms\n💻 Modern teaching aids and technology\n🔬 Science learning corner\n📚 Reading area and library\n🎨 Arts and crafts station\n🏃 Outdoor play area\n🍽️ Snack area\n\n*All facilities are designed for safe and effective learning.*",
-      followUp: ["Classroom photos", "Safety measures", "Facility tour"],
       icon: "🏢"
     },
     enrollment: {
       question: "When is the enrollment period?",
       answer: "**Enrollment Schedule:**\n\n📅 **Regular Enrollment**: April 1 - May 31\n📅 **Late Enrollment**: June 1 - 15 (with late fee)\n📅 **Summer Program Enrollment**: March 1 - 31\n\n*Early enrollment is encouraged to secure your slot. Limited slots available per class.*",
-      followUp: ["Enrollment process", "Required documents", "Class size"],
       icon: "📅"
     }
   };
